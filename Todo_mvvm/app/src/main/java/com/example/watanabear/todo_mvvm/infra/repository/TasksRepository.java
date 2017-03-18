@@ -32,6 +32,10 @@ public interface TasksRepository {
 
     void saveTask(@NonNull Task task);
 
+    void completeTask(@NonNull String taskId);
+
+    void activateTask(@NonNull String taskId);
+
     void clearCompletedTasks();
 
     void deleteAllTasks();

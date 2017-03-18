@@ -45,6 +45,22 @@ public class TasksRepositoryImpl implements TasksRepository {
     }
 
     @Override
+    public void completeTask(@NonNull String taskId) {
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+            Task t = realm.where(Task.class).equalTo(Task.FEILD_ID, taskId).findFirst();
+            t.isComplete = true;
+        });
+    }
+
+    @Override
+    public void activateTask(@NonNull String taskId) {
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+            Task t = realm.where(Task.class).equalTo(Task.FEILD_ID, taskId).findFirst();
+            t.isComplete = false;
+        });
+    }
+
+    @Override
     public void clearCompletedTasks() {
         Realm.getDefaultInstance().executeTransaction(realm -> {
             RealmResults<Task> tasks = realm

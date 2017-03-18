@@ -1,6 +1,11 @@
 package com.example.watanabear.todo_mvvm.domain.model;
 
 
+import android.support.annotation.Nullable;
+
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 import java.util.UUID;
 
 import io.realm.RealmObject;
@@ -54,5 +59,54 @@ public class Task extends RealmObject{
 
     public void setComplete(boolean complete) {
         isComplete = complete;
+    }
+
+    public boolean isCompleted() {
+        return isComplete;
+    }
+
+    public void setCompleted(boolean completed) {
+        isComplete = completed;
+    }
+
+    public boolean isActive() {
+        return !isComplete;
+    }
+
+    public boolean isEmpty() {
+        return isEmpty(title) && isEmpty(description);
+    }
+
+    private boolean isEmpty(String val) {
+        return val == null || val.isEmpty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return Objects.equal(id, task.id) &&
+                Objects.equal(title, task.title) &&
+                Objects.equal(description, task.description);
+    }
+
+    @Nullable
+    public String getTitleForList() {
+        if (!Strings.isNullOrEmpty(title)) {
+            return title;
+        } else {
+            return description;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id, title, description);
+    }
+
+    @Override
+    public String toString() {
+        return "Task with title " + title;
     }
 }
