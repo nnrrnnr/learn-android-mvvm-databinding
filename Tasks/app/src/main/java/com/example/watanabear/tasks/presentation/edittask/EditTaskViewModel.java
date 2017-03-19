@@ -27,12 +27,12 @@ public class EditTaskViewModel extends BaseObservable {
 
     private EditTaskNavigator editTaskNavigator;
 
-    public EditTaskViewModel(TasksRepository tasksRepository, EditTaskNavigator editTaskNavigator) {
+    EditTaskViewModel(TasksRepository tasksRepository, EditTaskNavigator editTaskNavigator) {
         this.tasksRepository = tasksRepository;
         this.editTaskNavigator = editTaskNavigator;
     }
 
-    public void start(String taskId) {
+    void start(String taskId) {
         if (taskId != null) {
             mTaskId = taskId;
             tasksRepository.getTask(taskId, new TasksRepository.GetTaskCallback() {
@@ -54,7 +54,7 @@ public class EditTaskViewModel extends BaseObservable {
         }
     }
 
-    public void saveTask(String title, String detail) {
+    void saveTask(String title, String detail) {
         Task t;
         if (mIsNewTask && Strings.isNullOrEmpty(mTaskId)) {
             t = Task.create(title, detail);
