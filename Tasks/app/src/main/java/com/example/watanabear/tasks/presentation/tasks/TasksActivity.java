@@ -1,49 +1,60 @@
 package com.example.watanabear.tasks.presentation.tasks;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.watanabear.tasks.R;
-import com.example.watanabear.tasks.presentation.edittask.EditTaskActivity;
+import com.example.watanabear.tasks.infra.TasksRepositoryImpl;
+import com.example.watanabear.tasks.presentation.ActivityUtils;
+import com.example.watanabear.tasks.presentation.ViewModelHolder;
 
-public class TasksActivity extends AppCompatActivity {
+public class TasksActivity extends AppCompatActivity implements TasksNavigator{
+
+    public static final String TASKS_VIEWMODEL_TAG = "tasks_viewmodel";
+
+    private TasksViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        TasksFragment fragment = findOrCreateFragment();
+        viewModel = findOrCreateViewModel();
+        fragment.setViewModel(viewModel);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            startActivity(new Intent(TasksActivity.this, EditTaskActivity.class));
-        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+    private TasksFragment findOrCreateFragment() {
+        TasksFragment fragment = (TasksFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (fragment == null) {
+            fragment = new TasksFragment();
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    fragment, R.id.contentFrame);
         }
+        return fragment;
+    }
 
-        return super.onOptionsItemSelected(item);
+    private TasksViewModel findOrCreateViewModel() {
+
+        @SuppressWarnings("unchecked")
+        ViewModelHolder<TasksViewModel> holder =
+                (ViewModelHolder<TasksViewModel>) getSupportFragmentManager()
+                        .findFragmentByTag(TASKS_VIEWMODEL_TAG);
+        if (holder != null && holder.getViewmodel() != null) {
+            return holder.getViewmodel();
+        } else {
+            TasksViewModel viewModel = new TasksViewModel(new TasksRepositoryImpl(),
+                    this);
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    ViewModelHolder.createContainer(viewModel),
+                    TASKS_VIEWMODEL_TAG);
+            return viewModel;
+        }
+    }
+
+
+    @Override
+    public void addNewTask() {
+
     }
 }

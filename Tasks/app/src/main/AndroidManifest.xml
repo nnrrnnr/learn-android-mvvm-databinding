@@ -3,10 +3,10 @@
     package="com.example.watanabear.tasks">
 
     <application
+        android:name=".TasksApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".TasksApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -23,7 +23,11 @@
         <activity
             android:name=".presentation.edittask.EditTaskActivity"
             android:label="@string/title_activity_edit_task"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".presentation.showtask.ShowTaskActivity"
+            android:label="@string/title_activity_show_task"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
