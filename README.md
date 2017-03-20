@@ -11,4 +11,5 @@ MVVMのアーキテクチャでTODOアプリを作成する
 - Taskの総数・未完了の数を表示する
 
 ## Library
-MobileDataBase : [ORMA](https://github.com/gfx/Android-Orma)
+MobileDataBase : Realm
+lambda : https://github.com/evant/gradle-retrolambda
